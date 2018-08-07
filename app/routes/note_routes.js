@@ -1,5 +1,5 @@
-let ObjectID = require('mongodb').ObjectID
-let Transactions = require('../transactions/transactions')
+const Transaction = require('./../schemas/transactions')
+let transactionValidator = require('../transactions/transactions')
 let bodyParser = require('body-parser').json()
 
 module.exports = function(app, db) {
@@ -17,10 +17,10 @@ module.exports = function(app, db) {
 
   app.post('/transactions', bodyParser, (req, res) => {
 
-    let tx = Transactions.parseTx(req)
+    let tx = new Transaction(transactionValidator.parseTx(req))
 
-    if (Transactions.validateTx(tx) === true) {
-      db.collection('transactions').insert(tx, (err, result) => {
+    if (transactionValidator.validateTx(transactionValidator.parseTx(req)) === true) {
+      tx.save((err, result) => {
         if (err) {
           res.send({ 'error': 'An error has ocurred' });
         } else {

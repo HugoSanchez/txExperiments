@@ -1,6 +1,6 @@
 const EthCrypto = require('eth-crypto')
-const MongoClient = require('mongodb').MongoClient;
-const db = require('../../config/db');
+const mongoose = require('mongoose');
+// const Transaction = require('./schemas/transactions')
 
 module.exports = {
 
@@ -24,5 +24,6 @@ module.exports = {
     }
     return tx
   }
+
 
 } //
