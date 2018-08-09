@@ -3,8 +3,8 @@ const Account = require('./app/schemas/accounts')
 
 const tx = new Transaction({
   type: "spend",
-  amount: 200,
-  from: "0x8C861e2a5783CD6BE0d20542e4718Ec7ed4f9618",
+  amount: 10,
+  from: "0x345387fa8A266888A83aF87151c5d0C350626318",
   to: "0xB5F7834a28681b7140a26c8A53e669bE4054b3e9",
   nonce: 0,
   txHash:
@@ -25,22 +25,22 @@ const masterAccount = new Account({
 // })
 
 
-Account.findOneAndUpdate({ address: tx.to }, {$set: {address: tx.to}}, {upsert:true}, function(err, acc){
-    let currentBalance = acc.balance
-
-    if (currentBalance === 'undefined') {
-      Account.update({address: tx.to}, {$set: {balance: tx.amount, nonce: -1}}, {upsert: true}, function(err, upAcc){
-        if (err) return console.error(err);
-        // console.log(upAcc)
-      });
+function updateBalances(){
+  Account.findOne({ address: tx.from }, function(err, acc) {
+    if (acc.balance > tx.amount) {
+      let updatedData = { balance: acc.balance - tx.amount, nonce: acc.nonce + 1 }
+      Account.update({address: tx.from}, updatedData, function(err, acc){
+      if (err) return console.error(err);
+    })
+    Account.findOneAndUpdate({ address: tx.to }, {$set: {address: tx.to}}, {upsert:true, setDefaultsOnInsert: true, new: true}, function(err, acc){
+      Account.update({address: tx.to}, {$set: {balance: acc.balance + tx.amount}}, function(err, acc){
+      })
+    })
+      return 'Correct'
     } else {
-      let balance = { balance: acc.balance + tx.amount }
-      Account.update({address: tx.to}, {$set: balance}, {upsert: true}, function(err, upAcc){
-        if (err) return console.error(err);
-        // console.log(upAcc)
-      });
+      return 'Sorry, not enough funds'
     }
+  })
+}
 
-    if (err) return console.error(err);
-    // console.log(acc);
-})
+updateBalances()
