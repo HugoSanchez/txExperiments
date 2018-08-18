@@ -12,7 +12,8 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongodb": "^2.2.16",
-    "mongoose": "^5.2.6"
+    "mongoose": "^5.2.6",
+    "promise": "^8.0.1"
   },
   "devDependencies": {
     "eth-crypto": "^1.2.3",

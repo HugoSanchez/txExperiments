@@ -1,6 +1,6 @@
 const Transaction = require('./../schemas/transactions')
-let transactionValidator = require('../transactions/transactions')
-let bodyParser = require('body-parser').json()
+const txValidator = require('../transactions/transactions')
+const bodyParser = require('body-parser').json()
 
 module.exports = function(app, db) {
   app.get('/transactions/:id', (req, res) => {
@@ -16,19 +16,23 @@ module.exports = function(app, db) {
   });
 
   app.post('/transactions', bodyParser, (req, res) => {
+    var enoughBalance = null;
+    var tx = txValidator.parseTx(req)
 
-    let tx = new Transaction(transactionValidator.parseTx(req))
-
-    if (transactionValidator.validateTx(transactionValidator.parseTx(req)) === true) {
-      tx.save((err, result) => {
-        if (err) {
-          res.send({ 'error': 'An error has ocurred' });
-        } else {
-          res.send('Transaction confirmed!!');
+    if (txValidator.validateTx(tx) === true) {
+      var updateBalancesPromise = txValidator.updateBalances(tx)
+      updateBalancesPromise.then(function(result){
+        enoughBalance = result
+        if (enoughBalance === true) {
+          res.send('Transaction confirmed!!')
+        } else if (enoughBalance === false) {
+          res.send('Sorry, not enough funds')
+        }else{
+          res.send("Error, please try again")
         }
-      });
+      })
     } else {
-      res.send('Sorry, invalid transation')
+      res.send('Invalid transaction')
     }
   });
 
