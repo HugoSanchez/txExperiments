@@ -25,5 +25,23 @@ module.exports = {
     return tx
   }
 
+  updateBalances: function(tx){
+    Account.findOne({ address: tx.from }, function(err, acc) {
+      if (acc.balance > tx.amount) {
+        let updatedData = { balance: acc.balance - tx.amount, nonce: acc.nonce + 1 }
+        Account.update({address: tx.from}, updatedData, function(err, acc){
+        if (err) return console.error(err);
+      })
+      Account.findOneAndUpdate({ address: tx.to }, {$set: {address: tx.to}}, {upsert:true, setDefaultsOnInsert: true, new: true}, function(err, acc){
+        Account.update({address: tx.to}, {$set: {balance: acc.balance + tx.amount}}, function(err, acc){
+        })
+      })
+        return 'Correct'
+      } else {
+        return 'Sorry, not enough funds'
+      }
+    })
+  }
+
 
 } //

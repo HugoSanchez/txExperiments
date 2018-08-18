@@ -3,7 +3,7 @@ const Account = require('./app/schemas/accounts')
 
 const tx = new Transaction({
   type: "spend",
-  amount: 10,
+  amount: 170,
   from: "0x345387fa8A266888A83aF87151c5d0C350626318",
   to: "0xB5F7834a28681b7140a26c8A53e669bE4054b3e9",
   nonce: 0,
