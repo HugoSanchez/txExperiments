@@ -66,14 +66,14 @@ var transaction =
     },
 }
 
-var signature = EthCrypto.sign(one.privateKey, getTxHash(transaction.txBody))
-transaction.txSig = signature
-
-console.log(transaction)
-console.log('Recover: ', EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody)));
-console.log('Address: ', one.address)
-
-var recovered = EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody))
+// var signature = EthCrypto.sign(one.privateKey, getTxHash(transaction.txBody))
+// transaction.txSig = signature
+//
+// console.log(transaction)
+// console.log('Recover: ', EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody)));
+// console.log('Address: ', one.address)
+//
+// var recovered = EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody))
 
 
 // function validateTx(tx) {
@@ -96,8 +96,8 @@ var recovered = EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBod
 //   }
 // })
 
-if (EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody)) === transaction.txBody.from){
-    console.log('Valid')
-  } else {
-    console.log('Invalid')
-  }
+// if (EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody)) === transaction.txBody.from){
+//     console.log('Valid')
+//   } else {
+//     console.log('Invalid')
+//   }

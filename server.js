@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Transaction = require('./app/schemas/transactions');
 
 
-mongoose.connect(db.url);
+mongoose.connect(db.url,  { useNewUrlParser: true });
 let database = mongoose.connection;
 
 const app = express()
