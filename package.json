@@ -10,9 +10,13 @@
   "description": "",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "ejs": "2.5.x",
+    "envvar": "1.1.x",
     "express": "^4.16.3",
+    "moment": "2.19.x",
     "mongodb": "^2.2.16",
     "mongoose": "^5.2.6",
+    "plaid": "2.6.x",
     "promise": "^8.0.1"
   },
   "devDependencies": {

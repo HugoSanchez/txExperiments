@@ -1,5 +1,5 @@
-const noteRoutes = require('./note_routes');
+const globalRoutes = require('./global_routes');
 
 module.exports = function(app, db) {
-  noteRoutes(app, db);
+  globalRoutes(app, db);
 }

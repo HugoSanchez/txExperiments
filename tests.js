@@ -68,7 +68,7 @@ var transaction =
 
 // var signature = EthCrypto.sign(one.privateKey, getTxHash(transaction.txBody))
 // transaction.txSig = signature
-//
+
 // console.log(transaction)
 // console.log('Recover: ', EthCrypto.recover(transaction.txSig, getTxHash(transaction.txBody)));
 // console.log('Address: ', one.address)
