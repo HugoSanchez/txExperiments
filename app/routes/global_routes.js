@@ -29,7 +29,7 @@ var client = new plaid.Client(
 );
 
 module.exports = function(app, db) {
-  app.get('/transactions/:id', (req, res) => {
+  app.get('/ktxs/:id', (req, res) => {
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
     db.collection('transactions').findOne(details, (err, item) => {
