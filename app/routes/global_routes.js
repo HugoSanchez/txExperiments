@@ -9,9 +9,9 @@ const Transaction = require('./../schemas/transactions')
 const txValidator = require('../transactions/transactions')
 
 // Plaid API access tokens (To delete)
-const PLAID_CLIENT_ID = '5b75d314d8c0450011009f6b';
-const PLAID_SECRET = '928a918c74eea531343f75fb8e7bf6';
-const PLAID_PUBLIC_KEY = 'cbc3786c0826ebad66f33cecc745dc';
+const PLAID_CLIENT_ID = '';
+const PLAID_SECRET = '';
+const PLAID_PUBLIC_KEY = '';
 const PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
 
 // We store the access_token in memory - in production, store it in a secure
@@ -29,7 +29,7 @@ var client = new plaid.Client(
 );
 
 module.exports = function(app, db) {
-  app.get('/transactions/:id', (req, res) => {
+  app.get('/ktxs/:id', (req, res) => {
     const id = req.params.id;
     const details = { '_id': new ObjectID(id) };
     db.collection('transactions').findOne(details, (err, item) => {
@@ -71,6 +71,7 @@ module.exports = function(app, db) {
   });
 
   app.post('/get_access_token', function(request, response, next) {
+    console.log('Hit that!!!')
     PUBLIC_TOKEN = request.body.public_token;
     console.log("MADE A REQ")
     console.log(request.body)
@@ -87,7 +88,9 @@ module.exports = function(app, db) {
       console.log('Access Token: ' + ACCESS_TOKEN);
       console.log('Item ID: ' + ITEM_ID);
       response.json({
-        'error': false
+        'error': false,
+        access_token: tokenResponse.access_token,
+        item_id: tokenResponse.item_id,
       });
     });
   });
@@ -95,7 +98,8 @@ module.exports = function(app, db) {
   app.get('/accounts', function(request, response, next) {
     // Retrieve high-level account information and account and routing numbers
     // for each account associated with the Item.
-    client.getAuth(ACCESS_TOKEN, function(error, authResponse) {
+    console.log('Authorization HEADER: ', request.headers)
+    client.getAuth(request.headers.authorization, function(error, authResponse) {
       if (error != null) {
         var msg = 'Unable to pull accounts from the Plaid API.';
         console.log(msg + '\n' + JSON.stringify(error));
@@ -104,9 +108,19 @@ module.exports = function(app, db) {
         });
       }
 
-      console.log(authResponse.accounts);
+      function totalBalances(){
+        var totalSavings = 0;
+        authResponse.accounts.forEach(a =>
+          totalSavings = totalSavings + a.balances.current
+        );
+        return totalSavings;
+      };
+
+      // console.log('TotalBalance: ', totalBalances())
+      // console.log('Accounts: ', authResponse.accounts);
       response.json({
         error: false,
+        total_balance: totalBalances(),
         accounts: authResponse.accounts,
         numbers: authResponse.numbers,
       });
