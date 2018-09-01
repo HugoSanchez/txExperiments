@@ -10,9 +10,9 @@ const plaid = require('plaid');
 const Transaction = require('./app/schemas/transactions');
 
 const APP_PORT = envvar.number('APP_PORT', 3000);
-const PLAID_CLIENT_ID = '5b75d314d8c0450011009f6b';
-const PLAID_SECRET = '928a918c74eea531343f75fb8e7bf6';
-const PLAID_PUBLIC_KEY = 'cbc3786c0826ebad66f33cecc745dc';
+const PLAID_CLIENT_ID = '';
+const PLAID_SECRET = '';
+const PLAID_PUBLIC_KEY = '';
 const PLAID_ENV = envvar.string('PLAID_ENV', 'sandbox');
 
 // We store the access_token in memory - in production, store it in a secure
