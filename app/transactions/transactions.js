@@ -40,11 +40,11 @@ module.exports = {
         } else {
           if (acc.balance > tx.txBody.amount) {
             var updatedData = { balance: acc.balance - tx.txBody.amount, nonce: acc.nonce + 1 }
-            Account.update({address: tx.txBody.from}, updatedData, function(err, acc){
+            Account.update({ address: tx.txBody.from }, updatedData, function(err, acc){
             if (err) return console.error(err);
           })
           Account.findOneAndUpdate({ address: tx.txBody.to }, {$set: {address: tx.txBody.to}}, {upsert:true, setDefaultsOnInsert: true, new: true}, function(err, acc){
-            Account.update({address: tx.txBody.to}, {$set: {balance: acc.balance + tx.txBody.amount}}, function(err, acc){
+            Account.update({ address: tx.txBody.to }, {$set: {balance: acc.balance + tx.txBody.amount}}, function(err, acc){
             })
           })
             resolve(true)
