@@ -1,5 +1,6 @@
-// // Libraries
+// Packages
 const bodyParser = require('body-parser').json()
+const EthCrypto = require('eth-crypto')
 
 // Directory Files
 const Transaction = require('./../schemas/transactions')
@@ -37,6 +38,11 @@ module.exports = function(app, db) {
     } else {
       res.send('Invalid transaction')
     }
+  });
+
+  app.get('/getEthId', (req, res) => {
+    var id = EthCrypto.createIdentity()
+    res.send({ success: id})
   });
 
 }; //

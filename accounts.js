@@ -15,5 +15,10 @@ module.exports = {
         pubKey: '8a240f6a39faf13b129b2364572eab813cf787673df56f7beea16f10eb13e3cd8c6da4823e01d144d6c8fa99e9c96419f949f78a9d156d5673ef8dbd2f428244',
         privateKey: '0x022c09f4302fe79001ffa1fc532542d1ac0c1933c63d9694e82054675fa1e8af',
       },
+    four: {
+        address: '0xd3b781ee972128c2A2B7858A8984F440375Fb595',
+        pubKey: '',
+        privateKey: ' 0xf4fba90eb2fbdc0e034ab033ce57ab6869061fe7edc04a1ab0179ac60acdae7d',
+      },
   // }
 }

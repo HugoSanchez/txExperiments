@@ -61,6 +61,7 @@ module.exports = function(app, db) {
   app.get('/accounts', function(request, response, next) {
     // Retrieve high-level account information and account and routing numbers
     // for each account associated with the Item.
+    console.log('MADE A REQ!!!!!!!!!!!!!!!!!!!!!!! TO ACCOUNTS!!!!!!!!')
     client.getAuth(request.headers.authorization, function(error, authResponse) {
       if (error != null) {
         var msg = 'Unable to pull accounts from the Plaid API.';
@@ -117,9 +118,11 @@ module.exports = function(app, db) {
 
   app.post('/transactions', function(request, response, next) {
     // Pull transactions for the Item for the last 30 days
+    console.log('REQ BODY:', request.body)
+    console.log('MADE A REQ!!!!!!!!!!!!!!!!!!!!!!!')
     var startDate = moment().subtract(30, 'days').format('YYYY-MM-DD');
     var endDate = moment().format('YYYY-MM-DD');
-    client.getTransactions(ACCESS_TOKEN, startDate, endDate, {
+    client.getTransactions(request.body.access_token, startDate, endDate, {
       count: 250,
       offset: 0,
     }, function(error, transactionsResponse) {
